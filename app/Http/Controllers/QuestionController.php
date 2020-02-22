@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Model\Question;
 use App\Http\Resources\QuestionResource;
+use App\Http\Controllers\Response;
 
 class QuestionController extends Controller
 {
@@ -29,9 +30,10 @@ class QuestionController extends Controller
         return response()->json(['failed' => $request->all()]);
     }
 
-    public function update()
+    public function update(Request $request, Question $question)
     {
-        
+         $question->update($request->all());
+        return response('Updated', 200);
     }
 
     public function destroy($slug)
