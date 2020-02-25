@@ -10,6 +10,11 @@ use App\Http\Controllers\Response;
 
 class QuestionController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('JWT', ['except' => ['index', 'show']]);
+    }
+    
     public function index()
     {
         return QuestionResource::collection(Question::latest()->get());   
