@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Category;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
@@ -30,8 +31,8 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
-        return response('created', 200);
-    }
+        return response('created', Response::HTTP_CREATED);
+    } 
 
     /**
      * Display the specified resource.
@@ -68,7 +69,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => str_slug($request->name),
         ]);
-        return response('Updated category', 200);
+        return response('Updated category', Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -80,6 +81,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response(null, 200);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
