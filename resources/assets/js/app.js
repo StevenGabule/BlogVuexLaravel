@@ -7,12 +7,12 @@ import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 
-Vue.component(
-    "example-component",
-    require("./components/ExampleComponent.vue")
-);
+Vue.component("app-home", require("./components/AppHome.vue").default);
+
+import router from './router/index';
 
 const app = new Vue({
     el: "#app",
-    vuetify: new Vuetify()
+    vuetify: new Vuetify(),
+    router
 });
