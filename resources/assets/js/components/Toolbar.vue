@@ -4,20 +4,9 @@
         <v-toolbar-title>Forum</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="hidden-sm-and-down">
-            <router-link to="/home" class="td-none">
-                <v-btn text>Home</v-btn>
-            </router-link>
-            <router-link to="/ask-question" class="td-none">
-                <v-btn text>Ask Question</v-btn>
-            </router-link>
-            <router-link to="/categories" class="td-none">
-                <v-btn text>Categories</v-btn>
-            </router-link>
-            <router-link to="/login" class="td-none">
-                <v-btn text>Login</v-btn>
-            </router-link>
-            <router-link to="/sign-up" class="td-none">
-                <v-btn text>Sign up</v-btn>
+
+            <router-link v-for="item in items" :key="item.title" :to="item.to" v-if="item.show" class="td-none">
+                <v-btn text>{{ item.title}}</v-btn>
             </router-link>
         </div>
     </v-toolbar>
@@ -25,7 +14,35 @@
 
 <script>
     export default {
-        name: "Toolbar"
+        name: "Toolbar",
+        data() {
+            return {
+                items:
+                    [
+                        {
+                            title: 'Forum', to: '/forum', show: true
+                        },
+                        {
+                            title: 'Ask Question', to: '/ask', show: User.loggedIn()
+                        },
+                        {
+                            title: 'Categories', to: '/categories', show: User.loggedIn()
+                        },
+                        {
+                            title: 'Login', to: '/login', show: !User.loggedIn()
+                        },
+                        {
+                            title: 'Logout', to: '/logout', show: User.loggedIn()
+                        }
+                    ]
+            }
+        },
+        created() {
+            EventBus.$on('logout', () => {
+                User.logout();
+                window.location.href='/login';
+            });
+        }
     }
 </script>
 <style>
