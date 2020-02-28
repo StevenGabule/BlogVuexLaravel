@@ -6,7 +6,7 @@
         <div class="hidden-sm-and-down">
 
             <router-link v-for="item in items" :key="item.title" :to="item.to" v-if="item.show" class="td-none">
-                <v-btn text>{{ item.title}}</v-btn>
+                <v-btn text>{{ item.title }}</v-btn>
             </router-link>
         </div>
     </v-toolbar>
@@ -23,13 +23,16 @@
                             title: 'Forum', to: '/forum', show: true
                         },
                         {
-                            title: 'Ask Question', to: '/ask', show: User.loggedIn()
+                            title: 'Ask Question', to: '/ask-question', show: User.loggedIn()
                         },
                         {
                             title: 'Categories', to: '/categories', show: User.loggedIn()
                         },
                         {
                             title: 'Login', to: '/login', show: !User.loggedIn()
+                        },
+                        {
+                            title: 'Sign up', to: '/sign-up', show: !User.loggedIn()
                         },
                         {
                             title: 'Logout', to: '/logout', show: User.loggedIn()

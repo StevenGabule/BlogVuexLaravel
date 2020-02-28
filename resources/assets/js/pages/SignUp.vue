@@ -58,7 +58,7 @@
 </template>
 
 <script>
-    import Token from "../Helpers/Token";
+    import  Token from "../Helpers/Token";
     import AppStorage from "../Helpers/AppStorage";
     import axios from "axios";
 
@@ -104,7 +104,7 @@
                         if (Token.isValid(access_token)) {
                             AppStorage.store(user, access_token)
                         }
-                        this.$router.push({name: 'forum'});
+                        window.location.href='/forum';
                     }).catch(err => {
                     this.errors = err.response.data.errors
                 })

@@ -31,7 +31,7 @@
         name: "Login",
 
         created() {
-            if (User.loggedIn())  {
+            if (User.loggedIn()) {
                 this.$router.push({name: 'forum'});
             }
         },
@@ -39,7 +39,7 @@
         data() {
             return {
                 form: {
-                    email: 'mitchell.jana@example.com',
+                    email: 'cathryn81@example.net',
                     password: 'secret'
                 },
                 onError: false
@@ -47,6 +47,7 @@
         },
 
         methods: {
+
             handleLogin() {
                 axios.post('/api/auth/login', this.form).then(res => {
                     const access_token = res.data.access_token;
@@ -55,7 +56,7 @@
                         AppStorage.store(user, access_token)
                     }
                     // this.$router.push({name: 'forum'});
-                    window.location.href='/forum';
+                    window.location.href = '/forum';
                 }).catch(err => {
                     console.error(err)
                 });

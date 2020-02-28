@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 100)->create();
-        factory(Category::class, 100)->create();
-        factory(Question::class, 1000)->create();
-        factory(Reply::class, 100)->create()->each(function($reply) {
-            return $reply->like()->saveMany(factory(Like::class, 100)->make());
+        factory(User::class, 10)->create();
+        factory(Category::class, 10)->create();
+        factory(Question::class, 10)->create();
+        factory(Reply::class, 10)->create()->each(function($reply) {
+            return $reply->like()->saveMany(factory(Like::class, 10)->make());
         });
     }
 }
