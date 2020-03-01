@@ -11,15 +11,22 @@
             <v-spacer></v-spacer>
             <v-btn color="teal">5 replies</v-btn>
             </v-card-title>
-            <v-card-text v-html="question.body" />
+            <v-card-text v-html="body" />
         </v-container>
     </v-card>
 </template>
 
 <script>
+    import md from 'marked'
+
     export default {
         name: "ShowQuestion",
-        props: ['question']
+        props: ['question'],
+        computed: {
+            body() {
+                return md.parse(this.question.body)
+            }
+        }
     }
 </script>
 

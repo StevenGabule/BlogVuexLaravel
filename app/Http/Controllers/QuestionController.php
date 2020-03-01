@@ -29,10 +29,7 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $q = auth()->user()->question()->create($request->all());
-        if ($q) {
-            return response()->json(['success' => $q], Responses::HTTP_CREATED);
-        }
-        return response()->json(['failed' => $request->all()]);
+        return response(new QuestionResource($q), Responses::HTTP_CREATED);
     }
 
     public function update(Request $request, Question $question)

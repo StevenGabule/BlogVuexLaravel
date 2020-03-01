@@ -1803,6 +1803,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! marked */ "./node_modules/marked/src/marked.js");
+/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(marked__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1821,9 +1823,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShowQuestion",
-  props: ['question']
+  props: ['question'],
+  computed: {
+    body: function body() {
+      return marked__WEBPACK_IMPORTED_MODULE_0___default.a.parse(this.question.body);
+    }
+  }
 });
 
 /***/ }),
@@ -1947,8 +1955,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleQuestion: function handleQuestion() {
+      var _this2 = this;
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/question', this.form).then(function (res) {
-        return console.log(res.data.data);
+        return _this2.$router.push(res.data.path);
       })["catch"](function (err) {
         return console.error(err.response.data.errors);
       });
@@ -1983,7 +1993,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      question: {}
+      question: null
     };
   },
   created: function created() {
@@ -55831,9 +55841,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("v-card-text", {
-            domProps: { innerHTML: _vm._s(_vm.question.body) }
-          })
+          _c("v-card-text", { domProps: { innerHTML: _vm._s(_vm.body) } })
         ],
         1
       )
@@ -56010,7 +56018,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("show-question", { attrs: { question: _vm.question } })
+  return _vm.question
+    ? _c("show-question", { attrs: { question: _vm.question } })
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -113086,7 +113096,6 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component("app-home", __webpack_require__(/*! ./components/AppHome.vue */ "./resources/assets/js/components/AppHome.vue")["default"]);
 
 window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_3__["default"];
-console.log(_Helpers_User__WEBPACK_IMPORTED_MODULE_3__["default"].id());
 window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_1___default.a();
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({

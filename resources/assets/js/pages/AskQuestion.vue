@@ -45,7 +45,7 @@
         methods: {
             handleQuestion() {
                 axios.post('/api/question', this.form)
-                    .then(res => console.log(res.data.data))
+                    .then(res => this.$router.push(res.data.path))
                     .catch(err => console.error(err.response.data.errors));
             }
         }
