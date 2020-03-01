@@ -8,7 +8,7 @@ class User {
         if (storeToken) {
             return !!Token.isValid(storeToken);
         }
-        return false
+        return false;
     }
 
     loggedIn() {
@@ -30,7 +30,10 @@ class User {
             return Token.payload(AppStorage.getToken()).sub;
         }
     }
+
+    own(id) {
+        return this.id() === id;
+    }
 }
 
-
-export default User = new User;
+export default User = new User();
