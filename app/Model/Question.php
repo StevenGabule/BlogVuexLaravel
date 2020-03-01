@@ -14,7 +14,9 @@ class Question extends Model
             $question->slug = str_slug($question->title);
         });
     }
-    protected $guarded = [];
+
+    // protected $guarded = [];
+    protected $fillable = ['title', 'slug','body', 'user_id', 'category_id'];
 
     // override the id routing
     public function getRouteKeyName()

@@ -19,7 +19,7 @@
             <v-card-text v-html="body" />
 
             <v-card-actions v-if="own">
-                <v-btn icon small>
+                <v-btn icon small @click="edit">
                     <v-icon color="orange">mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn icon small @click="destroy">
@@ -54,6 +54,9 @@ export default {
                 .delete(`/api/question/${this.question.slug}`)
                 .then(res => this.$router.push("/forum"))
                 .catch(err => console.error(res.response.data.errors));
+        },
+        edit() {
+            EventBus.$emit("startEditing");
         }
     }
 };
