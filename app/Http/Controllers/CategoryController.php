@@ -32,11 +32,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create([
+        $category = Category::create([
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
-        return response('created', Response::HTTP_CREATED);
+        return response($category, Response::HTTP_CREATED);
     } 
 
     /**
