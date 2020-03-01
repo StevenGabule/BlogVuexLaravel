@@ -1,3 +1,5 @@
+import AppStorage from "./Helpers/AppStorage";
+
 require("./bootstrap");
 
 window.Vue = require("vue");
@@ -11,6 +13,8 @@ Vue.component("app-home", require("./components/AppHome.vue").default);
 
 import User from './Helpers/User'
 window.User = User;
+
+console.log(User.id());
 
 window.EventBus = new Vue();
 

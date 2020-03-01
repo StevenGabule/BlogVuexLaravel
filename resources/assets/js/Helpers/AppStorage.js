@@ -13,8 +13,8 @@ class AppStorage {
     }
 
     clear() {
-        localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
     };
 
     getToken() {
@@ -22,8 +22,8 @@ class AppStorage {
     }
 
     getUser() {
-        return localStorage.getItem('token');
+        return localStorage.getItem('user');
     }
 }
 
-export default AppStorage = new AppStorage;
+export default AppStorage = new AppStorage();

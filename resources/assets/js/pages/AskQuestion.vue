@@ -44,7 +44,9 @@
 
         methods: {
             handleQuestion() {
-                axios.post('/api/question', this.form).then(res => console.log(res.data.data)).catch(err => console.error(err.response.data.errors));
+                axios.post('/api/question', this.form)
+                    .then(res => console.log(res.data.data))
+                    .catch(err => console.error(err.response.data.errors));
             }
         }
     }

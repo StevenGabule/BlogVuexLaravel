@@ -2082,6 +2082,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2090,22 +2112,22 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     if (User.loggedIn()) {
       this.$router.push({
-        name: 'forum'
+        name: "forum"
       });
     }
   },
   data: function data() {
     return {
       form: {
-        email: 'cathryn81@example.net',
-        password: 'secret'
+        email: "uschaden@example.net",
+        password: "secret"
       },
       onError: false
     };
   },
   methods: {
     handleLogin: function handleLogin() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/auth/login', this.form).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/auth/login", this.form).then(function (res) {
         var access_token = res.data.access_token;
         var user = res.data.user;
 
@@ -2114,7 +2136,7 @@ __webpack_require__.r(__webpack_exports__);
         } // this.$router.push({name: 'forum'});
 
 
-        window.location.href = '/forum';
+        window.location.href = "/forum";
       })["catch"](function (err) {
         console.error(err);
       });
@@ -112888,8 +112910,8 @@ function () {
   }, {
     key: "clear",
     value: function clear() {
-      localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
   }, {
     key: "getToken",
@@ -112899,7 +112921,7 @@ function () {
   }, {
     key: "getUser",
     value: function getUser() {
-      return localStorage.getItem('token');
+      return localStorage.getItem('user');
     }
   }]);
 
@@ -112938,7 +112960,7 @@ function () {
       var payload = this.payload(token);
 
       if (payload) {
-        return payload.iss === 'http://127.0.0.1:8000/api/auth/login' || 'http://127.0.0.1:8000/api/auth/signup';
+        return !!(payload.iss === 'http://127.0.0.1:8000/api/auth/login' || 'http://127.0.0.1:8000/api/auth/signup');
       }
 
       return false;
@@ -113046,27 +113068,31 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Helpers_User__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Helpers/User */ "./resources/assets/js/Helpers/User.js");
-/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router/index */ "./resources/assets/js/router/index.js");
+/* harmony import */ var _Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Helpers/AppStorage */ "./resources/assets/js/Helpers/AppStorage.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _Helpers_User__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Helpers/User */ "./resources/assets/js/Helpers/User.js");
+/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router/index */ "./resources/assets/js/router/index.js");
+
+
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("app-home", __webpack_require__(/*! ./components/AppHome.vue */ "./resources/assets/js/components/AppHome.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_2___default.a);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.component("app-home", __webpack_require__(/*! ./components/AppHome.vue */ "./resources/assets/js/components/AppHome.vue")["default"]);
 
-window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_2__["default"];
-window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_3__["default"];
+console.log(_Helpers_User__WEBPACK_IMPORTED_MODULE_3__["default"].id());
+window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_1___default.a();
 
-var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   el: "#app",
-  vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_1___default.a(),
-  router: _router_index__WEBPACK_IMPORTED_MODULE_3__["default"]
+  vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_2___default.a(),
+  router: _router_index__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 
 /***/ }),
@@ -113088,7 +113114,8 @@ try {
 } catch (e) {}
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
+ * to our Laravel back-end. This library automaticall
+ * y handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
@@ -113096,7 +113123,7 @@ try {
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 var JWTtoken = "Bearer ".concat(localStorage.getItem('token'));
-window.axios.defaults.headers.common["token"] = JWTtoken;
+window.axios.defaults.headers.common['Authorization'] = JWTtoken;
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just

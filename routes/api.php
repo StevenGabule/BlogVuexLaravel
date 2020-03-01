@@ -12,8 +12,7 @@ Route::delete('/like/{reply}', 'LikeController@unlike');
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
-
-], function ($router) {
+], static function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
     Route::post('logout', 'AuthController@logout');

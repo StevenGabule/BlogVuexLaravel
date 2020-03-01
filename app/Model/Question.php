@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(static function($question) {
+            $question->slug = str_slug($question->title);
+        });
+    }
     protected $guarded = [];
 
     // override the id routing
