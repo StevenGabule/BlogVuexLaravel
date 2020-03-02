@@ -2369,11 +2369,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["content"],
   data: function data() {
     return {
-      liked: false,
-      count: 0
+      liked: this.content.liked,
+      count: this.content.like_count
     };
+  },
+  computed: {
+    color: function color() {
+      return this.liked ? "red" : "red lighten-4";
+    }
   },
   methods: {
     like: function like() {
@@ -2383,10 +2389,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     incs: function incs() {
-      this.count++;
+      var _this = this;
+
+      axios.post("/api/like/".concat(this.content.id)).then(function (res) {
+        _this.count++;
+      });
     },
     decs: function decs() {
-      this.count--;
+      var _this2 = this;
+
+      axios["delete"]("/api/like/".concat(this.content.id)).then(function (res) {
+        _this2.count--;
+      });
     }
   }
 });
@@ -56651,7 +56665,7 @@ var render = function() {
               _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),
-              _c("like")
+              _c("like", { attrs: { content: _vm.reply } })
             ],
             1
           ),
@@ -57117,7 +57131,7 @@ var render = function() {
         "v-btn",
         { attrs: { icon: "" }, on: { click: _vm.like } },
         [
-          _c("v-icon", { attrs: { color: "red" } }, [_vm._v("mdi-heart")]),
+          _c("v-icon", { attrs: { color: _vm.color } }, [_vm._v("mdi-heart")]),
           _vm._v(" " + _vm._s(_vm.count) + "\n    ")
         ],
         1

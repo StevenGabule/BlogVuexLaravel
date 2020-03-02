@@ -1,19 +1,28 @@
 <template>
     <div>
         <v-btn icon @click="like">
-            <v-icon color="red">mdi-heart</v-icon> {{ count }}
+            <v-icon :color="color">mdi-heart</v-icon> {{ count }}
         </v-btn>
     </div>
 </template>
 
 <script>
 export default {
+    props: ["content"],
+
     data() {
         return {
-            liked: false,
-            count: 0
+            liked: this.content.liked,
+            count: this.content.like_count
         };
     },
+
+    computed: {
+        color() {
+            return this.liked ? "red" : "red lighten-4";
+        }
+    },
+
     methods: {
         like() {
             if (User.loggedIn()) {
@@ -22,10 +31,14 @@ export default {
             }
         },
         incs() {
-            this.count++;
+            axios.post(`/api/like/${this.content.id}`).then(res => {
+                this.count++;
+            });
         },
         decs() {
-            this.count--;
+            axios.delete(`/api/like/${this.content.id}`).then(res => {
+                this.count--;
+            });
         }
     }
 };

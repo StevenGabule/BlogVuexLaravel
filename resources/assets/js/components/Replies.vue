@@ -5,7 +5,7 @@
                 <div class="headline mr-2">{{ reply.user }}</div>
                 <div>said on {{ reply.created_at }}</div>
                 <v-spacer></v-spacer>
-                <like></like>
+                <like :content="reply"></like>
             </v-card-title>
 
             <v-divider></v-divider>
