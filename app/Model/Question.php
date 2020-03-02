@@ -18,6 +18,8 @@ class Question extends Model
     // protected $guarded = [];
     protected $fillable = ['title', 'slug','body', 'user_id', 'category_id'];
 
+    protected $with = ['replies'];
+
     // override the id routing
     public function getRouteKeyName()
     {
@@ -31,7 +33,7 @@ class Question extends Model
 
     public function replies()
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->latest();
     }
 
     public function category()

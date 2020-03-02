@@ -37,7 +37,10 @@ class ReplyController extends Controller
     {
         $reply = $question->replies()->create($request->all());
         if ($reply) {
-            return response()->json(['created' => 'success', 'reply' => new ReplyResource($reply)], Response::HTTP_CREATED);
+            return response()->json([
+                'created' => 'success', 
+                'reply' => new ReplyResource($reply)
+            ], Response::HTTP_CREATED);
         }
     }
 

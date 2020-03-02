@@ -37,7 +37,7 @@ export default {
                 {
                     title: "Categories",
                     to: "/category-new",
-                    show: User.loggedIn()
+                    show: User.admin()
                 },
                 {
                     title: "Login",

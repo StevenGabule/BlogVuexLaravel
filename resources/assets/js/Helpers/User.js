@@ -32,7 +32,11 @@ class User {
     }
 
     own(id) {
-        return this.id() === id;
+        return this.id() === parseInt(id);
+    }
+
+    admin() {
+        return this.id() === 11;
     }
 }
 

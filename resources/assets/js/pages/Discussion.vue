@@ -6,7 +6,11 @@
                     v-if="editing"
                     :question="question"
                 ></edit-question>
-                <show-question v-else :question="question"></show-question>
+                <show-question
+                    v-else
+                    :question="question"
+                    :replies="question.replies"
+                ></show-question>
             </v-col>
         </v-row>
     </v-container>

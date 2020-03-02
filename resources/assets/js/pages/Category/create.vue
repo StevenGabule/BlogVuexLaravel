@@ -2,51 +2,57 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-form @submit.prevent="create">
+                <v-form @submit.prevent="submit">
                     <h2>Create New Category</h2>
                     <v-text-field
                         label="Category name"
                         v-model="form.name"
                         required
                     />
-                    <v-btn type="submit" color="teal" style="color: white;"
-                        >Publish</v-btn
-                    >
+                    <v-btn type="submit" color="teal" style="color: white;">{{
+                        editing ? "Update" : "Publish"
+                    }}</v-btn>
                 </v-form>
 
-                <v-card class="mx-auto mt-5" max-width="100%" tile>
-                    <v-list>
-                        <v-subheader>All Categories</v-subheader>
-                        <v-list-item-group color="primary">
-                            <v-list-item
-                                v-for="(category, i) in categories"
-                                :key="i"
+                <v-simple-table fixed-header height="420px">
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th class="text-left">Name</th>
+                                <th class="text-left">actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(category, index) in categories"
+                                :key="index"
                             >
-                                <v-card-actions>
-                                    <v-btn icon small @click="edit">
-                                        <v-icon color="orange"
-                                            >mdi-pencil</v-icon
+                                <td>{{ category.name }}</td>
+                                <td>
+                                    <v-card-actions>
+                                        <v-btn icon small @click="edit(index)">
+                                            <v-icon color="orange"
+                                                >mdi-pencil</v-icon
+                                            >
+                                        </v-btn>
+
+                                        <v-btn
+                                            icon
+                                            small
+                                            @click="
+                                                destroy(category.slug, index)
+                                            "
                                         >
-                                    </v-btn>
-
-                                    <v-btn
-                                        icon
-                                        small
-                                        @click="destroy(category.slug, i)"
-                                    >
-                                        <v-icon color="red">mdi-delete</v-icon>
-                                    </v-btn>
-                                </v-card-actions>
-
-                                <v-list-item-content>
-                                    <v-list-item-title
-                                        v-text="category.name"
-                                    ></v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list-item-group>
-                    </v-list>
-                </v-card>
+                                            <v-icon color="red"
+                                                >mdi-delete</v-icon
+                                            >
+                                        </v-btn>
+                                    </v-card-actions>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
             </v-col>
         </v-row>
     </v-container>
@@ -61,23 +67,49 @@ export default {
             form: {
                 name: null
             },
-            categories: []
+            categories: [],
+            editSlug: null,
+            editing: false
         };
     },
 
     created() {
+        if (!User.admin()) {
+            this.$router.push("/forum");
+        }
         axios
             .get("/api/category")
             .then(res => (this.categories = res.data.data));
     },
 
     methods: {
+        submit() {
+            this.editSlug ? this.update() : this.create();
+        },
+
+        update() {
+            axios
+                .patch(`/api/category/${this.editSlug}`, this.form)
+                .then(res => {
+                    this.categories.unshift(res.data);
+                    this.form.name = "";
+                    this.editing = false;
+                });
+        },
+
         create() {
             axios.post("/api/category", this.form).then(res => {
                 this.categories.unshift(res.data);
+                this.form.name = "";
             });
         },
-        edit() {},
+
+        edit(index) {
+            this.form.name = this.categories[index].name;
+            this.editSlug = this.categories[index].slug;
+            this.editing = true;
+            this.categories.splice(index, 1);
+        },
 
         destroy(slug, index) {
             axios

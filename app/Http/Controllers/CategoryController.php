@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('JWT', ['except' => ['show', 'index']]);
+        // $this->middleware('JWT', ['except' => ['show', 'index']]);
     }
 
     /**
@@ -36,7 +36,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
-        return response($category, Response::HTTP_CREATED);
+        return response(new CategoryResource($category), Response::HTTP_CREATED);
     } 
 
     /**
@@ -74,7 +74,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => str_slug($request->name),
         ]);
-        return response('Updated category', Response::HTTP_ACCEPTED);
+        return response($category, Response::HTTP_ACCEPTED);
     }
 
     /**
