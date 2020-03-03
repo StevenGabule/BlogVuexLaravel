@@ -16,6 +16,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         LikeEvent::class => [LikeEventListener::class],
+        'App\Events\DeleteReplyEvent' => ['App\Listeners\DeleteReplyEventListener'],
     ];
 
     /**

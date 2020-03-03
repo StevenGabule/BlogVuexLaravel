@@ -1906,9 +1906,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var _this = this;
+
     if (User.loggedIn()) {
       this.getNotifications();
     }
+
+    Echo["private"]('App.User.' + User.id()).notification(function (notification) {
+      _this.unread.unshift(notification);
+
+      _this.unreadcount++;
+    });
   },
   computed: {
     color: function color() {
@@ -1917,25 +1925,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getNotifications: function getNotifications() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/notifications").then(function (res) {
-        _this.read = res.data.read;
-        _this.unread = res.data.unread;
-        _this.unreadcount = res.data.unread.length;
+        _this2.read = res.data.read;
+        _this2.unread = res.data.unread;
+        _this2.unreadcount = res.data.unread.length;
       });
     },
     readPath: function readPath(question) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/markAsRead", {
         id: question.id
       }).then(function (res) {
-        _this2.unread.splice(question, 1);
+        _this3.unread.splice(question, 1);
 
-        _this2.read.push(question);
+        _this3.read.push(question);
 
-        _this2.unreadcount--;
+        _this3.unreadcount--;
       });
     }
   }
@@ -2115,6 +2123,13 @@ __webpack_require__.r(__webpack_exports__);
       });
       Echo["private"]('App.User.' + User.id()).notification(function (notification) {
         _this.content.unshift(notification.reply);
+      });
+      Echo.channel('DeleteReplyChannel').listen('DeleteReplyEvent', function (e) {
+        for (var index = 0; index < _this.content.length; index++) {
+          if (_this.content[index].id === e.id) {
+            _this.content.splice(index, 1);
+          }
+        }
       });
     }
   }
