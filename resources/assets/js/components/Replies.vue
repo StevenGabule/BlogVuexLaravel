@@ -65,6 +65,7 @@ export default {
                 this.editing = false;
             });
         },
+
         destroy() {
             EventBus.$emit("deleteReply", this.index);
         },

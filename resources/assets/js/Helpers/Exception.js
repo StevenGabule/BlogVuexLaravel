@@ -5,9 +5,12 @@ class Exception {
     }
 
     isExpired(error) {
-        if (error == "Token is expired") {
+        if (error === "Token is expired") {
             User.logout();
+        }
 
+        if (error === "Token is invalid") {
+            User.logout();
         }
     }
 }

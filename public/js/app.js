@@ -2295,6 +2295,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2308,7 +2318,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       own: User.own(this.question.user_id),
-      replying: false
+      loggedIn: User.loggedIn(),
+      replying: false,
+      replyCount: this.question.replies_count
     };
   },
   created: function created() {
@@ -2328,6 +2340,18 @@ __webpack_require__.r(__webpack_exports__);
       });
       EventBus.$on("CancelReplying", function () {
         _this.replying = false;
+      });
+      EventBus.$on("NewReply", function () {
+        _this.replyCount++;
+      });
+      EventBus.$on("deleteReply", function () {
+        _this.replyCount--;
+      });
+      Echo["private"]('App.User.' + User.id()).notification(function (notification) {
+        _this.replyCount++;
+      });
+      Echo.channel('DeleteReplyChannel').listen('DeleteReplyEvent', function (e) {
+        _this.replyCount--;
       });
     },
     destroy: function destroy() {
@@ -67054,7 +67078,8 @@ var render = function() {
                       _vm._v(
                         _vm._s(_vm.question.user) +
                           " said on\n                        " +
-                          _vm._s(_vm.question.created_at)
+                          _vm._s(_vm.question.created_at) +
+                          "\n                    "
                       )
                     ])
                   ]),
@@ -67067,7 +67092,11 @@ var render = function() {
                       staticStyle: { color: "white" },
                       attrs: { color: "teal" }
                     },
-                    [_vm._v(_vm._s(_vm.question.replies_count) + " replies")]
+                    [
+                      _vm._v(
+                        _vm._s(_vm.replyCount) + " replies\n                "
+                      )
+                    ]
                   )
                 ],
                 1
@@ -67111,19 +67140,17 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  staticClass: "ml-3",
-                  attrs: { color: "primary" },
-                  on: { click: _vm.enableReply }
-                },
-                [_vm._v("Reply")]
-              ),
-              _vm._v(" "),
-              _c("v-btn", { staticClass: "ml-3", attrs: { color: "info" } }, [
-                _vm._v("View Reply")
-              ])
+              _vm.loggedIn
+                ? _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-3",
+                      attrs: { color: "primary" },
+                      on: { click: _vm.enableReply }
+                    },
+                    [_vm._v("Reply\n            ")]
+                  )
+                : _vm._e()
             ],
             1
           )
@@ -67133,6 +67160,29 @@ var render = function() {
       _vm._v(" "),
       _vm.replying
         ? _c("new-reply", { attrs: { slug: _vm.question.slug } })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.loggedIn
+        ? _c(
+            "div",
+            { staticClass: "text-center mt-5" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticStyle: { "text-decoration": "none", color: "white" },
+                  attrs: { to: "/login" }
+                },
+                [
+                  _c("v-btn", { attrs: { color: "error", large: "" } }, [
+                    _vm._v("Please login to reply this thread.")
+                  ])
+                ],
+                1
+              )
+            ],
+            1
+          )
         : _vm._e(),
       _vm._v(" "),
       _c("reply", { attrs: { question: _vm.question } })
@@ -124552,7 +124602,11 @@ function () {
   }, {
     key: "isExpired",
     value: function isExpired(error) {
-      if (error == "Token is expired") {
+      if (error === "Token is expired") {
+        _User__WEBPACK_IMPORTED_MODULE_0__["default"].logout();
+      }
+
+      if (error === "Token is invalid") {
         _User__WEBPACK_IMPORTED_MODULE_0__["default"].logout();
       }
     }
@@ -124607,7 +124661,20 @@ function () {
   }, {
     key: "decode",
     value: function decode(payload) {
-      return JSON.parse(atob(payload));
+      if (this.isBase64(payload)) {
+        return JSON.parse(atob(payload));
+      }
+
+      return false;
+    }
+  }, {
+    key: "isBase64",
+    value: function isBase64(str) {
+      try {
+        return btoa(atob(str)).replace(/=/g, "") === str;
+      } catch (e) {
+        return false;
+      }
     }
   }]);
 
@@ -124629,14 +124696,11 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AppStorage */ "./resources/assets/js/Helpers/AppStorage.js");
 /* harmony import */ var _Token__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Token */ "./resources/assets/js/Helpers/Token.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -124654,7 +124718,7 @@ function () {
       var storeToken = _AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
 
       if (storeToken) {
-        return !!_Token__WEBPACK_IMPORTED_MODULE_1__["default"].isValid(storeToken);
+        return _Token__WEBPACK_IMPORTED_MODULE_1__["default"].isValid(storeToken) ? true : this.logout();
       }
 
       return false;
