@@ -1,8 +1,13 @@
 <template>
     <v-toolbar>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
         <v-toolbar-title>Forum</v-toolbar-title>
+
         <v-spacer></v-spacer>
+
+        <notifications v-if="loggedIn" />
+
         <div class="hidden-sm-and-down">
             <router-link
                 v-for="item in items"
@@ -19,10 +24,16 @@
 </template>
 
 <script>
+import Notifications from "./Notifications";
+
 export default {
     name: "Toolbar",
+
+    components: { Notifications },
+
     data() {
         return {
+            loggedIn: User.loggedIn(),
             items: [
                 {
                     title: "Forum",
@@ -57,6 +68,7 @@ export default {
             ]
         };
     },
+
     created() {
         EventBus.$on("logout", () => {
             User.logout();

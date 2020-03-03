@@ -4,7 +4,7 @@
             <v-flex xs8>
                 <question
                     v-for="question in questions"
-                    :key="question.path"
+                    :key="question.id"
                     :question="question"
                 ></question>
             </v-flex>
