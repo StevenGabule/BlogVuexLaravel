@@ -7,7 +7,8 @@
 </template>
 
 <script>
-export default {
+
+    export default {
     props: ["content"],
 
     data() {
@@ -15,6 +16,14 @@ export default {
             liked: this.content.liked,
             count: this.content.like_count
         };
+    },
+
+    created() {
+        Echo.channel('LikeChannel').listen('LikeEvent', (e) => {
+            if (this.content.id === e.id) {
+                e.type === 1 ? this.count++ : this.count--;
+            }
+        })
     },
 
     computed: {

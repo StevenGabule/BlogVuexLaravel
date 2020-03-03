@@ -2113,6 +2113,9 @@ __webpack_require__.r(__webpack_exports__);
           _this.content.splice(index, 1);
         });
       });
+      Echo["private"]('App.User.' + User.id()).notification(function (notification) {
+        _this.content.unshift(notification.reply);
+      });
     }
   }
 });
@@ -2474,6 +2477,15 @@ __webpack_require__.r(__webpack_exports__);
       count: this.content.like_count
     };
   },
+  created: function created() {
+    var _this = this;
+
+    Echo.channel('LikeChannel').listen('LikeEvent', function (e) {
+      if (_this.content.id === e.id) {
+        e.type === 1 ? _this.count++ : _this.count--;
+      }
+    });
+  },
   computed: {
     color: function color() {
       return this.liked ? "red" : "red lighten-4";
@@ -2487,17 +2499,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     incs: function incs() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post("/api/like/".concat(this.content.id)).then(function (res) {
-        _this.count++;
+        _this2.count++;
       });
     },
     decs: function decs() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios["delete"]("/api/like/".concat(this.content.id)).then(function (res) {
-        _this2.count--;
+        _this3.count--;
       });
     }
   }
@@ -124700,7 +124712,12 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "1a993f3f7f9aee9e2859",
   cluster: "ap1",
-  encrypted: true
+  encrypted: true,
+  auth: {
+    headers: {
+      Authorization: JWTtoken
+    }
+  }
 });
 
 /***/ }),

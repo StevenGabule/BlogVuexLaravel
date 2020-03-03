@@ -31,6 +31,7 @@ export default {
 
     methods: {
         listen() {
+
             EventBus.$on("NewReply", reply => {
                 this.content.unshift(reply);
             });
@@ -44,6 +45,10 @@ export default {
                         this.content.splice(index, 1);
                     });
             });
+
+            Echo.private('App.User.' + User.id()).notification((notification) => {
+                this.content.unshift(notification.reply)
+            })
         }
     }
 };

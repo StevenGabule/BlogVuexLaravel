@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\LikeEvent;
+use App\Listeners\LikeEventListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,9 +15,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
-        ],
+        LikeEvent::class => [LikeEventListener::class],
     ];
 
     /**
