@@ -17,6 +17,7 @@ class User {
 
     logout() {
         AppStorage.clear();
+        window.location.href = "/login";
     }
 
     name() {

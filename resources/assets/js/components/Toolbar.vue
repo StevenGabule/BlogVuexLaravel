@@ -72,7 +72,6 @@ export default {
     created() {
         EventBus.$on("logout", () => {
             User.logout();
-            window.location.href = "/login";
         });
     }
 };

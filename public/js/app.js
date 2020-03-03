@@ -1867,6 +1867,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Helpers_Exception__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Helpers/Exception */ "./resources/assets/js/Helpers/Exception.js");
 //
 //
 //
@@ -1896,6 +1897,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1931,6 +1933,8 @@ __webpack_require__.r(__webpack_exports__);
         _this2.read = res.data.read;
         _this2.unread = res.data.unread;
         _this2.unreadcount = res.data.unread.length;
+      })["catch"](function (error) {
+        _Helpers_Exception__WEBPACK_IMPORTED_MODULE_1__["default"].handle(error);
       });
     },
     readPath: function readPath(question) {
@@ -2460,7 +2464,6 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     EventBus.$on("logout", function () {
       User.logout();
-      window.location.href = "/login";
     });
   }
 });
@@ -124516,6 +124519,52 @@ function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/Helpers/Exception.js":
+/*!**************************************************!*\
+  !*** ./resources/assets/js/Helpers/Exception.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./User */ "./resources/assets/js/Helpers/User.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Exception =
+/*#__PURE__*/
+function () {
+  function Exception() {
+    _classCallCheck(this, Exception);
+  }
+
+  _createClass(Exception, [{
+    key: "handle",
+    value: function handle(error) {
+      this.isExpired(error.response.data.error);
+    }
+  }, {
+    key: "isExpired",
+    value: function isExpired(error) {
+      if (error == "Token is expired") {
+        _User__WEBPACK_IMPORTED_MODULE_0__["default"].logout();
+      }
+    }
+  }]);
+
+  return Exception;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Exception = new Exception());
+
+/***/ }),
+
 /***/ "./resources/assets/js/Helpers/Token.js":
 /*!**********************************************!*\
   !*** ./resources/assets/js/Helpers/Token.js ***!
@@ -124619,6 +124668,7 @@ function () {
     key: "logout",
     value: function logout() {
       _AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].clear();
+      window.location.href = "/login";
     }
   }, {
     key: "name",
@@ -124668,7 +124718,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _Helpers_User__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Helpers/User */ "./resources/assets/js/Helpers/User.js");
-/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router/index */ "./resources/assets/js/router/index.js");
+/* harmony import */ var _Helpers_Exception__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Helpers/Exception */ "./resources/assets/js/Helpers/Exception.js");
+/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./router/index */ "./resources/assets/js/router/index.js");
 
 
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js");
@@ -124680,12 +124731,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component("app-home", __webpack_require__(/*! ./components/AppHome.vue */ "./resources/assets/js/components/AppHome.vue")["default"]);
 
 window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_3__["default"];
+
+window.Exception = _Helpers_Exception__WEBPACK_IMPORTED_MODULE_4__["default"];
 window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_1___default.a();
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   el: "#app",
   vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_2___default.a(),
-  router: _router_index__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _router_index__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),

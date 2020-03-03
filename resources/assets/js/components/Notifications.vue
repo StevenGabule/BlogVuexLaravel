@@ -29,6 +29,7 @@
 
 <script>
     import axios from "axios";
+    import Exception from "../Helpers/Exception";
 
     export default {
         data() {
@@ -63,7 +64,9 @@
                     this.read = res.data.read;
                     this.unread = res.data.unread;
                     this.unreadcount = res.data.unread.length;
-                });
+                }).catch(error => {
+                    Exception.handle(error)
+                })
 
             },
 
